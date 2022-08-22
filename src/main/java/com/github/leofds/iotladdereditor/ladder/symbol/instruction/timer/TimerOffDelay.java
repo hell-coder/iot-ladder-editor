@@ -40,6 +40,11 @@ public class TimerOffDelay extends TimerInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "TOF";
+	}
+
+	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);
 		String name = getMemory().getName().isEmpty() ? "?" : getMemory().getName();

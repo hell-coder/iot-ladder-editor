@@ -39,6 +39,7 @@ public class LadderProgram implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Rungs rungs;
 	private Device device;
+	private List<DeviceMemory> booleanMemory;
 	private List<DeviceMemory> integerMemory;
 	private List<DeviceMemory> floatMemory;
 	private ProgramProperties properties;
@@ -49,12 +50,13 @@ public class LadderProgram implements Serializable{
 		properties.setCodeOption( CodeOptions.values()[0] );
 		device = DeviceFactory.createEsp32();
 		
+		booleanMemory = new ArrayList<DeviceMemory>();
 		integerMemory = new ArrayList<DeviceMemory>();
 		floatMemory = new ArrayList<DeviceMemory>();
-		for(int i=1;i<=16;i++){
+
+		for(int i = 1; i <= 8; i++) {
 			integerMemory.add( new DeviceMemory(String.format("MI%02d", i), Integer.class) );
-		}
-		for(int i=1;i<=16;i++){
+			booleanMemory.add( new DeviceMemory(String.format("M%02d", i), Boolean.class) );
 			floatMemory.add( new DeviceMemory(String.format("MF%02d", i), Float.class) );
 		}
 	}
@@ -73,6 +75,23 @@ public class LadderProgram implements Serializable{
 
 	public void setDevice(Device device) {
 		this.device = device;
+	}
+
+	public List<DeviceMemory> getBooleanMemory() {
+		return booleanMemory;
+	}
+
+	public DeviceMemory getBooleanMemoryByName(String name) {
+		for(DeviceMemory mem: booleanMemory) {
+			if(mem.getName().equals(name)) {
+				return mem;
+			}
+		}
+		return null;
+	}
+	
+	public void setBooleanMemory(List<DeviceMemory> booleanMemory) {
+		this.booleanMemory = booleanMemory;
 	}
 
 	public List<DeviceMemory> getIntegerMemory() {
@@ -213,6 +232,11 @@ public class LadderProgram implements Serializable{
 				if(peripheralIO.getName().equals(name)){
 					return peripheralIO;
 				}
+			}
+		}
+		for(DeviceMemory memory: booleanMemory){
+			if(memory.getName().equals(name)){
+				return memory;
 			}
 		}
 		for(DeviceMemory memory: integerMemory){

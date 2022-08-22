@@ -25,6 +25,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -111,6 +113,16 @@ public abstract class CountInstruction extends LadderInstruction{
 
 	public void setCount(boolean count) {
 		this.count = count;
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("num", getMemory().getName());
+		map.put("preset", String.valueOf(preset));
+
+		return map;
 	}
 
 	@Override

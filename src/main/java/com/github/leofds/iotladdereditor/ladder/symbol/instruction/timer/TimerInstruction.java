@@ -25,6 +25,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -135,6 +137,16 @@ public abstract class TimerInstruction extends LadderInstruction{
 
 	public void setTimeBase(int timeBase) {
 		this.base = timeBase;
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("num", getMemory().getName());
+		map.put("preset", String.valueOf(preset * base));
+
+		return map;
 	}
 
 	@Override

@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -49,6 +51,15 @@ public abstract class ContactInstruction extends LadderInstruction{
 
 	public ContactInstruction() {
 		super(1, 1, 0, 0, new DeviceMemory());
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("in", getMemory().getName());
+
+		return map;
 	}
 
 	@Override
@@ -124,6 +135,19 @@ public abstract class ContactInstruction extends LadderInstruction{
 				}
 			}
 		}
+
+		for(Peripheral peripheral:peripherals){
+			for(PeripheralIO peripheralIO:peripheral.getPeripheralItems()){
+				if(peripheralIO.getIo() == IO.OUTPUT){
+					screen.addMemory(peripheralIO);
+				}
+			}
+		}
+
+		for (DeviceMemory m : Mediator.getInstance().getProject().getLadderProgram().getBooleanMemory()) {
+			screen.addMemory(m);
+		}
+
 	}
 
 	@Override

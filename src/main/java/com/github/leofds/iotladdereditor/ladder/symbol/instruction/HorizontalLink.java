@@ -21,6 +21,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -45,6 +47,18 @@ public class HorizontalLink extends LadderInstruction{
 		super(1,1,row, col,null);
 	}
 	
+	@Override
+	public String getTypeStr(){
+		return "LINK";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		return map;
+	}
+
 	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);

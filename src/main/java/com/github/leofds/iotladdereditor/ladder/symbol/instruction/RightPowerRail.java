@@ -22,6 +22,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -45,6 +47,18 @@ public class RightPowerRail extends LadderInstruction{
 	
 	public RightPowerRail(int row, int col) {
 		super(1,1,row,col,null);
+	}
+
+	@Override
+	public String getTypeStr(){
+		return "RAIL";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		return map;
 	}
 
 	@Override

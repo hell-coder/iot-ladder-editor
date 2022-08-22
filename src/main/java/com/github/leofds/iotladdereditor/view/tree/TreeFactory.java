@@ -153,11 +153,11 @@ public class TreeFactory {
 		coilsNode.addChild(new CustomTreeNode("Negated coil", NegatedCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/NegatedCoil_24x24.png"))));
 		coilsNode.addChild(new CustomTreeNode("SET (latch) coil", SetCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/SetCoil_24x24.png"))));
 		coilsNode.addChild(new CustomTreeNode("RESET (unlatch) coil", ResetCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/ResetCoil_24x24.png"))));
-		coilsNode.addChild(new CustomTreeNode("Retentive (memory) coil", RetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/RetentiveMemoryCoil_24x24.png"))));
-		coilsNode.addChild(new CustomTreeNode("SET retentive (memory) coil", SetRetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/SetRetentiveMemoryCoil_24x24.png"))));
-		coilsNode.addChild(new CustomTreeNode("RESET retentive (memory) coil", ResetRetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/ResetRetentiveMemoryCoil_24x24.png"))));
-		coilsNode.addChild(new CustomTreeNode("Positive transition-sensing coil", PositiveTransitionCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/PositiveTransitionCoil_24x24.png"))));
-		coilsNode.addChild(new CustomTreeNode("Negative transition-sensing coil", NegativeTransitionCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/NegativeTransitionCoil_24x24.png"))));
+//		coilsNode.addChild(new CustomTreeNode("Retentive (memory) coil", RetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/RetentiveMemoryCoil_24x24.png"))));
+//		coilsNode.addChild(new CustomTreeNode("SET retentive (memory) coil", SetRetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/SetRetentiveMemoryCoil_24x24.png"))));
+//		coilsNode.addChild(new CustomTreeNode("RESET retentive (memory) coil", ResetRetentiveMemoryCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/ResetRetentiveMemoryCoil_24x24.png"))));
+//		coilsNode.addChild(new CustomTreeNode("Positive transition-sensing coil", PositiveTransitionCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/PositiveTransitionCoil_24x24.png"))));
+//		coilsNode.addChild(new CustomTreeNode("Negative transition-sensing coil", NegativeTransitionCoil.class,new ImageIcon(TreeFactory.class.getResource("/images/NegativeTransitionCoil_24x24.png"))));
 		
 		timerNode.addChild(new CustomTreeNode("Timer On Delay", TimerOnDelay.class,new ImageIcon(TreeFactory.class.getResource("/images/TimerOn_16x16.png"))));
 		timerNode.addChild(new CustomTreeNode("Timer Off Delay", TimerOffDelay.class,new ImageIcon(TreeFactory.class.getResource("/images/TimerOff_16x16.png"))));
@@ -185,7 +185,7 @@ public class TreeFactory {
 		mathNode.addChild(new CustomTreeNode("MUL", Mul.class,new ImageIcon(TreeFactory.class.getResource("/images/MUL_24x24.png"))));
 		mathNode.addChild(new CustomTreeNode("SUB", Sub.class,new ImageIcon(TreeFactory.class.getResource("/images/SUB_24x24.png"))));
 		
-		systemNode.addChild(new CustomTreeNode("Scan Time", ScanTime.class, new ImageIcon(TreeFactory.class.getResource("/images/SettingsB_16x16.png"))));
+//		systemNode.addChild(new CustomTreeNode("Scan Time", ScanTime.class, new ImageIcon(TreeFactory.class.getResource("/images/SettingsB_16x16.png"))));
 		
 		rootNode.addChild(new CustomTreeNode("Rung", Rung.class,new ImageIcon(TreeFactory.class.getResource("/images/Rung_16x16.png"))));
 		rootNode.addChild(contactsNode);
@@ -195,7 +195,7 @@ public class TreeFactory {
 		rootNode.addChild(compareNode);
 		rootNode.addChild(logicNode);
 		rootNode.addChild(mathNode);
-		rootNode.addChild(systemNode);
+//		rootNode.addChild(systemNode);
 		return rootNode;
 	}
 }

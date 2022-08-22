@@ -39,6 +39,11 @@ public class NotEqual extends CompareInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "NQ";
+	}
+
+	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);
 		String label = "(A != B)";

@@ -49,7 +49,7 @@ public class ToolBar extends JToolBar implements Observer{
 		btnStop.setFocusPainted(false); 
 		btnStop.setOpaque(false);
 		btnStop.setEnabled(true);
-		btnStop.setToolTipText(Strings.buildRun());
+		btnStop.setToolTipText(Strings.flash());
 		btnStop.addActionListener(new ActionListener() {
 
 			@Override

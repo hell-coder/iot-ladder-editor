@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JMenuItem;
 
@@ -173,6 +174,10 @@ public abstract class LadderInstruction extends LadderSymbol implements Comparab
 	
 	public abstract void updateDevice(Device device);
 	
+	public abstract String getTypeStr();
+
+	public abstract Map<String, String> getData();
+
 	@Override
 	public int compareTo(LadderInstruction o) {
 		return  memory.getName().compareTo(o.getMemory().getName());

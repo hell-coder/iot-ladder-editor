@@ -39,6 +39,11 @@ public class CountUp extends CountInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "CNTU";
+	}
+
+	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);
 		String labelName =getMemory().getName().isEmpty() ? "?" : getMemory().getName();

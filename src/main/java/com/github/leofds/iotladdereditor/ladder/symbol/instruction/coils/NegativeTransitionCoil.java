@@ -45,6 +45,11 @@ public class NegativeTransitionCoil extends CoilInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "COIL_N";
+	}
+
+	@Override
 	public void setMemory(DeviceMemory memory) {
 		lastValue = new DeviceMemory("LAST_"+memory.getName().split("[:]")[0], memory.getType());
 		super.setMemory(memory);

@@ -79,4 +79,9 @@ public class NegatedCoil extends CoilInstruction{
 	public String toString() {
 		return "instruction=(/), " + super.toString();
 	}
+	
+	@Override
+	public String getTypeStr(){
+		return "COIL_N";
+	}
 }

@@ -26,6 +26,7 @@ import com.github.leofds.iotladdereditor.compiler.analizer.SemanticAnalyzer;
 import com.github.leofds.iotladdereditor.compiler.domain.IR;
 import com.github.leofds.iotladdereditor.compiler.generator.CodeGenerator;
 import com.github.leofds.iotladdereditor.compiler.generator.IRGenerator;
+import com.github.leofds.iotladdereditor.compiler.generator.JsonGenerator;
 import com.github.leofds.iotladdereditor.compiler.generator.factory.CodeGeneratorFactory;
 import com.github.leofds.iotladdereditor.i18n.Strings;
 import com.github.leofds.iotladdereditor.util.FileUtils;
@@ -38,24 +39,25 @@ public class Compiler{
 		Mediator.getInstance().outputConsoleMessage(Strings.compiling()+"...");
 
 		if(SemanticAnalyzer.analyze(project.getLadderProgram())){
-			IR ir = IRGenerator.generate(project.getLadderProgram());
-			project.setIr(ir);
+//			IR ir = IRGenerator.generate(project.getLadderProgram());
+//			project.setIr(ir);
 
-			try {
-				FileUtils.createFile("out/ladder.ir", ir.getTextQuadruple());
-				CodeGenerator codeGenerator = CodeGeneratorFactory.create( project.getLadderProgram().getProperties().getCodeOption() );
-				SourceCode sCode = codeGenerator.generate(project);
+//			try {
+//				FileUtils.createFile("out/ladder.ir", ir.getTextQuadruple());
+//				CodeGenerator codeGenerator = CodeGeneratorFactory.create( project.getLadderProgram().getProperties().getCodeOption() );
+//				SourceCode sCode = codeGenerator.generate(project);
+				JsonGenerator.generate(project.getLadderProgram());
 
-				for(SourceFile src:sCode.getFiles()){
-					FileUtils.createFile(String.format("out/%s", src.getFname()),src.getContent());
-				}
+//				for(SourceFile src:sCode.getFiles()){
+//					FileUtils.createFile(String.format("out/%s", src.getFname()),src.getContent());
+//				}
 
 				Mediator.getInstance().outputConsoleMessage(Strings.successfullyCompleted());
 				project.setCompiled(true);
 				return true;
-			} catch (IOException e) {
-				Mediator.getInstance().outputConsoleMessage(Strings.failToCreateFile());
-			}
+//			} catch (IOException e) {
+//				Mediator.getInstance().outputConsoleMessage(Strings.failToCreateFile());
+//			}
 		}else{
 			project.setCompiled(false);
 			Mediator.getInstance().outputConsoleMessage(Strings.terminatedWithError());	

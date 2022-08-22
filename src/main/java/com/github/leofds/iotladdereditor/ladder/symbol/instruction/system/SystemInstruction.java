@@ -25,6 +25,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -40,6 +42,18 @@ public abstract class SystemInstruction extends LadderInstruction{
 
 	public SystemInstruction(DeviceMemory memory) {
 		super(2, 2, 0, 0, memory);
+	}
+
+	@Override
+	public String getTypeStr(){
+		return "";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		return map;
 	}
 
 	@Override

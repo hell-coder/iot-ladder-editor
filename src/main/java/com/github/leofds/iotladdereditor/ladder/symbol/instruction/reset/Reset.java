@@ -27,6 +27,8 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -58,6 +60,25 @@ public class Reset extends LadderInstruction{
 	public Reset() {
 		super(1, 1, 0, 0, new DeviceMemory());
 		setLabel("RES");
+	}
+
+	@Override
+	public String getTypeStr(){
+		if(getMemory().getType().equals(TimerInstruction.class)) {
+			return "TRES";
+		} else if (getMemory().getType().equals(CountInstruction.class)){
+			return "CNTR";
+		} 
+		return "";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("num", getMemory().getName());
+
+		return map;
 	}
 
 	@Override

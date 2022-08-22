@@ -25,6 +25,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -83,6 +85,17 @@ public abstract class OperatorInstruction extends LadderInstruction{
 
 	public void setDestiny(DeviceMemory destiny) {
 		this.destiny = destiny;
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("src_a", sourceA.getName());
+		map.put("src_b", sourceB.getName());
+		map.put("dest", destiny.getName());
+
+		return map;
 	}
 
 	@Override
@@ -221,34 +234,6 @@ public abstract class OperatorInstruction extends LadderInstruction{
 			screen.addMemoryA(flaotMem);
 			screen.addMemoryB(flaotMem);
 			screen.addMemoryD(flaotMem);
-		}
-		for(TimerInstruction timer: ladderProgram.getAllTimers()){
-			screen.addMemoryA(timer.getPresetMemory());
-			screen.addMemoryA(timer.getAccumMemory());
-			screen.addMemoryA(timer.getDoneMemory());
-			screen.addMemoryA(timer.getEnableMemory());
-			screen.addMemoryB(timer.getPresetMemory());
-			screen.addMemoryB(timer.getAccumMemory());
-			screen.addMemoryB(timer.getDoneMemory());
-			screen.addMemoryB(timer.getEnableMemory());
-			screen.addMemoryD(timer.getPresetMemory());
-			screen.addMemoryD(timer.getAccumMemory());
-			screen.addMemoryD(timer.getDoneMemory());
-			screen.addMemoryD(timer.getEnableMemory());
-		}
-		for(CountInstruction count: ladderProgram.getAllCounts()){
-			screen.addMemoryA(count.getPresetMemory());
-			screen.addMemoryA(count.getAccumMemory());
-			screen.addMemoryA(count.getDoneMemory());
-			screen.addMemoryA(count.getCountMemory());
-			screen.addMemoryB(count.getPresetMemory());
-			screen.addMemoryB(count.getAccumMemory());
-			screen.addMemoryB(count.getDoneMemory());
-			screen.addMemoryB(count.getCountMemory());
-			screen.addMemoryD(count.getPresetMemory());
-			screen.addMemoryD(count.getAccumMemory());
-			screen.addMemoryD(count.getDoneMemory());
-			screen.addMemoryD(count.getCountMemory());
 		}
 		screen.setSourceA(getSourceA());
 		screen.setSourceB(getSourceB());

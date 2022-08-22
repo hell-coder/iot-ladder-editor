@@ -45,6 +45,8 @@ import com.github.leofds.iotladdereditor.ladder.symbol.instruction.count.CountIn
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.timer.TimerInstruction;
 import com.github.leofds.iotladdereditor.ladder.util.BField;
 import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
+import java.util.Map;
+import java.util.HashMap;
 
 public abstract class CompareInstruction extends LadderInstruction{
 
@@ -76,6 +78,16 @@ public abstract class CompareInstruction extends LadderInstruction{
 	}
 
 	public void setMemory(DeviceMemory memory) {
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("src_a", sourceA.getName());
+		map.put("src_b", sourceB.getName());
+
+		return map;
 	}
 
 	@Override
@@ -172,13 +184,6 @@ public abstract class CompareInstruction extends LadderInstruction{
 	public void beforeShowScreen(DialogScreen dialog) {
 		LadderProgram ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
 		ComparePropertyScreen screen = (ComparePropertyScreen) dialog;
-		List<Peripheral> peripherals = Mediator.getInstance().getProject().getLadderProgram().getDevice().getPeripherals();
-		for(Peripheral peripheral:peripherals){
-			for(PeripheralIO peripheralIO:peripheral.getPeripheralItems()){
-				screen.addMemoryA(peripheralIO);
-				screen.addMemoryB(peripheralIO);
-			}
-		}
 		List<DeviceMemory> intMems = ladderProgram.getIntegerMemory();
 		for (DeviceMemory intMem : intMems) {
 			screen.addMemoryA(intMem);
@@ -188,26 +193,6 @@ public abstract class CompareInstruction extends LadderInstruction{
 		for (DeviceMemory flaotMem : floatMems) {
 			screen.addMemoryA(flaotMem);
 			screen.addMemoryB(flaotMem);
-		}
-		for(TimerInstruction timer: ladderProgram.getAllTimers()){
-			screen.addMemoryA(timer.getPresetMemory());
-			screen.addMemoryA(timer.getAccumMemory());
-			screen.addMemoryA(timer.getDoneMemory());
-			screen.addMemoryA(timer.getEnableMemory());
-			screen.addMemoryB(timer.getPresetMemory());
-			screen.addMemoryB(timer.getAccumMemory());
-			screen.addMemoryB(timer.getDoneMemory());
-			screen.addMemoryB(timer.getEnableMemory());
-		}
-		for(CountInstruction count: ladderProgram.getAllCounts()){
-			screen.addMemoryA(count.getPresetMemory());
-			screen.addMemoryA(count.getAccumMemory());
-			screen.addMemoryA(count.getDoneMemory());
-			screen.addMemoryA(count.getCountMemory());
-			screen.addMemoryB(count.getPresetMemory());
-			screen.addMemoryB(count.getAccumMemory());
-			screen.addMemoryB(count.getDoneMemory());
-			screen.addMemoryB(count.getCountMemory());
 		}
 		screen.setSourceA(getSourceA());
 		screen.setSourceB(getSourceB());

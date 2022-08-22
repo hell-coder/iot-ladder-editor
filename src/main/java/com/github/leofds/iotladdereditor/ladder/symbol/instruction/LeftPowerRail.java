@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
@@ -68,6 +70,18 @@ public class LeftPowerRail extends LadderInstruction{
 
 	public void setNumber(Integer number) {
 		this.number = number;
+	}
+
+	@Override
+	public String getTypeStr(){
+		return "RAIL";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		return map;
 	}
 
 	@Override

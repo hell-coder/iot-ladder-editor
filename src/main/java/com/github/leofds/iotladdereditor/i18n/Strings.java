@@ -93,7 +93,8 @@ public class Strings {
 	public static String build() { return bundle.getString("build"); }
 	public static String buildall() { return bundle.getString("buildall"); }
 	public static String run() { return bundle.getString("run"); }
-	public static String buildRun() { return bundle.getString("buildRun"); }
+	public static String flash() { return bundle.getString("flash"); }
+	public static String read() { return bundle.getString("read"); }
 	public static String stop() { return bundle.getString("stop"); }
 	public static String configuration() { return bundle.getString("configuration"); }
 	public static String connect() { return bundle.getString("connect"); }
@@ -167,6 +168,7 @@ public class Strings {
 	public static String errorReadingFile() { return bundle.getString("errorReadingFile"); }
 	public static String errorOpeningFile() { return bundle.getString("errorOpeningFile"); }
 	public static String ladderProgramExtension() { return bundle.getString("ladderProgramExtension"); }
+	public static String ladderProgramExtensionjs() { return bundle.getString("ladderProgramExtensionjs"); }
 	public static String invalidFileExtension() { return bundle.getString("invalidFileExtension"); }
 	public static String theExtensionMustBe() { return bundle.getString("theExtensionMustBe"); }
 	public static String doYouWantToOverwriteTheFile() { return bundle.getString("doYouWantToOverwriteTheFile"); }

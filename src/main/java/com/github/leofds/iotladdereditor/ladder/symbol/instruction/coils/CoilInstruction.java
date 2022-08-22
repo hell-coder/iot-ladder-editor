@@ -42,6 +42,8 @@ import com.github.leofds.iotladdereditor.ladder.symbol.instruction.coils.view.Co
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.count.CountInstruction;
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.timer.TimerInstruction;
 import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
+import java.util.Map;
+import java.util.HashMap;
 
 public abstract class CoilInstruction extends LadderInstruction{
 
@@ -124,6 +126,10 @@ public abstract class CoilInstruction extends LadderInstruction{
 				}
 			}
 		}
+
+		for (DeviceMemory m : Mediator.getInstance().getProject().getLadderProgram().getBooleanMemory()) {
+			screen.addMemory(m);
+		}
 	}
 	
 	@Override
@@ -149,5 +155,19 @@ public abstract class CoilInstruction extends LadderInstruction{
 				setMemory(new DeviceMemory());
 			}
 		}
+	}
+	
+	@Override
+	public String getTypeStr(){
+		return "COIL";
+	}
+
+	@Override
+	public Map<String, String> getData() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("out", getMemory().getName());
+
+		return map;
 	}
 }

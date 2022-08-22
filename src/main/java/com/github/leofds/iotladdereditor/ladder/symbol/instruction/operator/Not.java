@@ -51,6 +51,11 @@ public class Not extends OperatorInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "NOT";
+	}
+
+	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);
 		String valueSrcA = getSourceA().getName().isEmpty() ? "?" : getSourceA().getName();
@@ -134,13 +139,6 @@ public class Not extends OperatorInstruction{
 	public void beforeShowScreen(DialogScreen dialog) {
 		LadderProgram ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
 		NotPropertyScreen screen = (NotPropertyScreen) dialog;
-		List<Peripheral> peripherals = Mediator.getInstance().getProject().getLadderProgram().getDevice().getPeripherals();
-		for(Peripheral peripheral:peripherals){
-			for(PeripheralIO peripheralIO:peripheral.getPeripheralItems()){
-				screen.addMemoryA(peripheralIO);
-				screen.addMemoryD(peripheralIO);
-			}
-		}
 		List<DeviceMemory> intMems = ladderProgram.getIntegerMemory();
 		for (DeviceMemory intMem : intMems) {
 			screen.addMemoryA(intMem);
@@ -149,27 +147,6 @@ public class Not extends OperatorInstruction{
 		List<DeviceMemory> floatMems = ladderProgram.getFloatMemory();
 		for (DeviceMemory flaotMem : floatMems) {
 			screen.addMemoryA(flaotMem);
-			screen.addMemoryD(flaotMem);
-		}
-		for(TimerInstruction timer: ladderProgram.getAllTimers()){
-			screen.addMemoryA(timer.getPresetMemory());
-			screen.addMemoryA(timer.getAccumMemory());
-			screen.addMemoryA(timer.getDoneMemory());
-			screen.addMemoryA(timer.getEnableMemory());
-			screen.addMemoryD(timer.getPresetMemory());
-			screen.addMemoryD(timer.getAccumMemory());
-			screen.addMemoryD(timer.getDoneMemory());
-			screen.addMemoryD(timer.getEnableMemory());
-		}
-		for(CountInstruction count: ladderProgram.getAllCounts()){
-			screen.addMemoryA(count.getPresetMemory());
-			screen.addMemoryA(count.getAccumMemory());
-			screen.addMemoryA(count.getDoneMemory());
-			screen.addMemoryA(count.getCountMemory());
-			screen.addMemoryD(count.getPresetMemory());
-			screen.addMemoryD(count.getAccumMemory());
-			screen.addMemoryD(count.getDoneMemory());
-			screen.addMemoryD(count.getCountMemory());
 		}
 		screen.setSourceA(getSourceA());
 		screen.setDestiny(getDestiny());

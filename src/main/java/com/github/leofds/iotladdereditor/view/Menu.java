@@ -58,7 +58,8 @@ public class Menu extends JMenuBar {
 		JMenuItem fileExit = new JMenuItem(Strings.exit());
 		JMenu menuProject = new JMenu(Strings.project());
 		JMenuItem projectBuild = new JMenuItem(Strings.build());
-		JMenuItem projectBuildRun = new JMenuItem(Strings.buildRun());
+		JMenuItem projectRead = new JMenuItem(Strings.read());
+		JMenuItem projectFlash = new JMenuItem(Strings.flash());
 		JMenuItem projectProprerties = new JMenuItem(Strings.properties());
 		JMenu menuHelp = new JMenu(Strings.help());
 		helpLang = new JMenu(Strings.language());
@@ -88,7 +89,8 @@ public class Menu extends JMenuBar {
 		fileSaveAs.addActionListener(getFileSaveAsAction());
 		fileExit.addActionListener(getFileExitAction());
 		projectBuild.addActionListener(getProjectBuild());
-		projectBuildRun.addActionListener(getProjectBuildRun());
+		projectFlash.addActionListener(getProjectFlash());
+		projectRead.addActionListener(getProjectRead());
 		projectProprerties.addActionListener(getProjectProperties());
 		helpAbout.addActionListener(getHelpAbout());
 
@@ -112,13 +114,17 @@ public class Menu extends JMenuBar {
 		fileExit.getActionMap().put("evtExit", (AbstractAction) getFileExitAction());
 		fileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
 
+		projectRead.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), "evtRead");
+		projectRead.getActionMap().put("evtRead", (AbstractAction) getProjectRead());
+		projectRead.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
+
 		projectBuild.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK), "evtBuild");
 		projectBuild.getActionMap().put("evtBuild", (AbstractAction) getProjectBuild());
 		projectBuild.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK));
 
-		projectBuildRun.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK), "evtBuildRun");
-		projectBuildRun.getActionMap().put("evtBuildRun", (AbstractAction) getProjectBuildRun());
-		projectBuildRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
+		projectFlash.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), "evtFlash");
+		projectFlash.getActionMap().put("evtFlash", (AbstractAction) getProjectFlash());
+		projectFlash.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
 		
 		helpAbout.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0, true),"evtAbout");
 		helpAbout.getActionMap().put("evtAbout", (AbstractAction) getHelpAbout());
@@ -133,8 +139,9 @@ public class Menu extends JMenuBar {
 		menuFile.add(fileSaveAs);
 		menuFile.addSeparator();
 		menuFile.add(fileExit);
+		menuProject.add(projectRead);
 		menuProject.add(projectBuild);
-		menuProject.add(projectBuildRun);
+		menuProject.add(projectFlash);
 		menuProject.addSeparator();
 		menuProject.add(projectProprerties);
 		menuHelp.add(helpLang);
@@ -212,6 +219,17 @@ public class Menu extends JMenuBar {
 		};
 	}
 
+	private AbstractAction getProjectRead() {
+		return new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Subject.getInstance().notifyChange(SubMsg.READ);
+			}
+		};
+	}
+	
 	private AbstractAction getProjectBuild() {
 		return new AbstractAction() {
 			private static final long serialVersionUID = 1L;
@@ -223,13 +241,13 @@ public class Menu extends JMenuBar {
 		};
 	}
 	
-	private AbstractAction getProjectBuildRun() {
+	private AbstractAction getProjectFlash() {
 		return new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Subject.getInstance().notifyChange(SubMsg.BUILD_RUN);
+				Subject.getInstance().notifyChange(SubMsg.FLASH);
 			}
 		};
 	}

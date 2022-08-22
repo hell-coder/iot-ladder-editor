@@ -40,6 +40,11 @@ public class NormallyClosedContact extends ContactInstruction{
 	}
 
 	@Override
+	public String getTypeStr(){
+		return "NC";
+	}
+
+	@Override
 	public void paint(Graphics2D g2d){
 		super.paint(g2d);
 		g2d.setColor(new Color(0, 0, 255));

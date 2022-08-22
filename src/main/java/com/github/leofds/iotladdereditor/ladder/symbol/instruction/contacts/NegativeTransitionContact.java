@@ -44,6 +44,11 @@ public class NegativeTransitionContact extends ContactInstruction{
 	}
 	
 	@Override
+	public String getTypeStr(){
+		return "NF";
+	}
+
+	@Override
 	public void setMemory(DeviceMemory memory) {
 		lastValue = new DeviceMemory("LAST_"+memory.getName().split("[:]")[0], memory.getType());
 		super.setMemory(memory);
