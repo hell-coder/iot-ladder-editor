@@ -47,7 +47,7 @@ public class ReadEvent implements Observer {
 		Mediator me = Mediator.getInstance();
 
 		try {
-			URL url = new URL("http://192.168.4.1/ladder_program");
+			URL url = new URL("http://plc/ladder_program");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			int status = con.getResponseCode();
