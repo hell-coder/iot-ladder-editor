@@ -27,6 +27,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +58,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONObject;
 
 import com.github.leofds.iotladdereditor.application.Mediator;
 import com.github.leofds.iotladdereditor.compiler.domain.CodeOptions;
@@ -138,6 +144,7 @@ public class ProjectProperties extends JDialog {
 		tabbedPane.setBounds(10, 112, 780, 303);
 		contentPanel.add(tabbedPane);
 
+		/*
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab(Strings.mqtt(), null, panel_2, null);
 		panel_2.setLayout(null);
@@ -475,6 +482,7 @@ public class ProjectProperties extends JDialog {
 		comboBox_code.setModel(new DefaultComboBoxModel<CodeOptions>(CodeOptions.values()));
 		comboBox_code.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
+		*/
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, Strings.wifi(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(391, 9, 399, 98);
@@ -504,11 +512,129 @@ public class ProjectProperties extends JDialog {
 		loadFields();
 	}
 
+	private void ReadFromDev() {
+		Mediator me = Mediator.getInstance();
+		ProgramProperties properties = ladderProgram.getProperties();
+
+		try {
+			URL url = new URL("http://plc/wifi_ssid");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			int status = con.getResponseCode();
+			me.outputConsoleMessage("Code:" + status);
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine);
+			}
+			in.close();
+			properties.setWifiSsid(content.toString());
+			con.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			me.outputConsoleMessage(e.getMessage());
+		}
+
+		try {
+			URL url = new URL("http://plc/wifi_pass");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			int status = con.getResponseCode();
+			me.outputConsoleMessage("Code:" + status);
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine);
+			}
+			in.close();
+			properties.setWifiPassword(content.toString());
+			con.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			me.outputConsoleMessage(e.getMessage());
+		}
+	}
+
+	private void WriteToDev() {
+		Mediator me = Mediator.getInstance();
+		ProgramProperties properties = ladderProgram.getProperties();
+
+		try {
+			byte[] val = properties.getWifiSsid().getBytes();
+
+			URL url = new URL("http://plc/wifi_ssid");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setDoOutput(true);
+			con.setFixedLengthStreamingMode(val.length);
+//			http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			OutputStream os = con.getOutputStream();
+			os.write(val);
+
+
+			int status = con.getResponseCode();
+			me.outputConsoleMessage("Code:" + status);
+
+			BufferedReader in = new BufferedReader(
+			new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine);
+			}
+			in.close();
+			con.disconnect();
+			me.outputConsoleMessage(content.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			me.outputConsoleMessage(e.getMessage());
+		}
+
+		try {
+			byte[] val = properties.getWifiPassword().getBytes();
+
+			URL url = new URL("http://plc/wifi_pass");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setDoOutput(true);
+			con.setFixedLengthStreamingMode(val.length);
+//			http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			OutputStream os = con.getOutputStream();
+			os.write(val);
+
+
+			int status = con.getResponseCode();
+			me.outputConsoleMessage("Code:" + status);
+
+			BufferedReader in = new BufferedReader(
+			new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine);
+			}
+			in.close();
+			con.disconnect();
+			me.outputConsoleMessage(content.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			me.outputConsoleMessage(e.getMessage());
+		}
+	}
+
 	private void loadFields() {
 		ProgramProperties properties = ladderProgram.getProperties();
+		ReadFromDev();
+/*
 		comboBox_code.setSelectedItem( properties.getCodeOption() );
+*/
 		textFieldSsid.setText( properties.getWifiSsid() );
 		textFieldPassword.setText( properties.getWifiPassword() );
+/*
 		textFieldBrokerAddress.setText( properties.getBrokerAddress() );
 		textFieldBokerPort.setText( ""+properties.getBrokerPort() );
 		textFieldClientID.setText( properties.getMqttClientID() );
@@ -529,17 +655,20 @@ public class ProjectProperties extends JDialog {
 		checkBoxTelemetryOutput.setSelected( properties.getTelemetryPutOutput() );
 		checkBoxTelemetryMemory.setSelected( properties.getTelemetryPubMemory() );
 		enableTelemetry( checkBoxEnableTelemetry.isSelected() );
+*/
 	}
 
 	private void save() {
 		int dialogResult = JOptionPane.showConfirmDialog(this, Strings.confirmSaveProjectProperties(), Strings.titleSaveProjectProperties(), JOptionPane.YES_NO_OPTION);
 		if(dialogResult == 0) {
-			CodeOptions codeOpt = (CodeOptions) comboBox_code.getSelectedItem();
+//			CodeOptions codeOpt = (CodeOptions) comboBox_code.getSelectedItem();
 			ProgramProperties properties = ladderProgram.getProperties();
-			properties.setCodeOption(codeOpt);
+//			properties.setCodeOption(codeOpt);
+
 			properties.setWifiSsid( textFieldSsid.getText() );
 			properties.setWifiPassword( textFieldPassword.getText() );
-			properties.setBrokerAddress( textFieldBrokerAddress.getText() );
+			WriteToDev();
+/*			properties.setBrokerAddress( textFieldBrokerAddress.getText() );
 			try {
 				properties.setBrokerPort( Integer.parseInt( textFieldBokerPort.getText() ) );
 			} catch (Exception e) {
@@ -565,10 +694,11 @@ public class ProjectProperties extends JDialog {
 			}
 			properties.setTelemetrySeconds( Integer.parseInt( teleSec ) );
 
+			*/
 			Mediator me = Mediator.getInstance();
 			me.getProject().setChanged(true);
-			FileUtils.saveLadderProgram();
-			me.clearConsole();
+//			FileUtils.saveLadderProgram();
+//			me.clearConsole();
 			me.updateDevice(device);
 			this.dispose();
 		}
