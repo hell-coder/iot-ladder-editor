@@ -86,17 +86,7 @@
 						</manifest>
 					</archive>
 					<finalName>${project.artifactId}-${project.version}</finalName>
-                			<appendAssemblyId>true</appendAssemblyId>
 				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
