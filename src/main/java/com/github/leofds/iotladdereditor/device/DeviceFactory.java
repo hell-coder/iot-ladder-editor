@@ -40,6 +40,10 @@ public class DeviceFactory {
 		PeripheralIO pc6in = new PeripheralIO("I6", Boolean.class, "21", "PIN_I06", IO.INPUT);
 		PeripheralIO pc7in = new PeripheralIO("I7", Boolean.class, "22", "PIN_I07", IO.INPUT);
 		PeripheralIO pc8in = new PeripheralIO("I8", Boolean.class, "23", "PIN_I08", IO.INPUT);
+		PeripheralIO pc9in = new PeripheralIO("I9", Boolean.class, "24", "PIN_I09", IO.INPUT);
+		PeripheralIO pc10in = new PeripheralIO("I10", Boolean.class, "28", "PIN_I10", IO.INPUT);
+		PeripheralIO pc11in = new PeripheralIO("I11", Boolean.class, "29", "PIN_I11", IO.INPUT);
+		PeripheralIO pc12in = new PeripheralIO("I12", Boolean.class, "30", "PIN_I12", IO.INPUT);
 
 		output.addPeripheralItem(pc1out);
 		output.addPeripheralItem(pc2out);
@@ -57,6 +61,10 @@ public class DeviceFactory {
 		input.addPeripheralItem(pc6in);
 		input.addPeripheralItem(pc7in);
 		input.addPeripheralItem(pc8in);
+		input.addPeripheralItem(pc9in);
+		input.addPeripheralItem(pc10in);
+		input.addPeripheralItem(pc11in);
+		input.addPeripheralItem(pc12in);
 
 		device.addPeripheral(output);
 		device.addPeripheral(input);
