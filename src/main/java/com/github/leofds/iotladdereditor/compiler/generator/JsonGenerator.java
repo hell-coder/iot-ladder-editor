@@ -114,7 +114,7 @@ public class JsonGenerator {
 		/* resolv cons */
 		for (Rung rung: ladderProgram.getRungs()) {
 			for (LadderInstruction Ir = rung.getFirst(); Ir != null; Ir = Ir.getNextNotEmpty()) {
-
+				Ir.setCons(new ArrayList<Integer>());
 				LadderInstruction Ir_next = Ir.getNextNotEmpty();				
 				if (Ir_next != null) {
 					Ir.addCon(Ir_next.getId());

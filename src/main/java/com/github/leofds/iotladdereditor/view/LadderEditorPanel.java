@@ -416,7 +416,9 @@ public class LadderEditorPanel extends JPanel implements MouseListener, MouseWhe
 
 					// add peripheral IO
 					DeviceMemory memory = (DeviceMemory) transferable.getTransferData(CollageTransferHandler.COLLAGE_MEMORY_FLAVOR);
-					memory = me.getProject().getLadderProgram().getOriginMemory(memory.getName());
+					if(memory != null){
+						memory = me.getProject().getLadderProgram().getOriginMemory(memory.getName());
+					}
 					if(memory != null){
 						instruction = me.getProject().getLadderProgram().getRungs().getInstruction(x, y);
 						if(instruction != null){
