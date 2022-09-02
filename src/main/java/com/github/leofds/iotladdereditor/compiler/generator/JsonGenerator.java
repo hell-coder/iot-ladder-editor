@@ -98,43 +98,74 @@ public class JsonGenerator {
 
 		jo.put("variables", jo_vars);
 
-		JSONArray ja_rungs = new JSONArray();
+		/* resolv ids */
 		for (Rung rung: ladderProgram.getRungs()) {
-			JSONArray ja_els = new JSONArray();
 			int id = 0;
+			for (LadderInstruction Ir = rung.getFirst(); Ir != null; Ir = Ir.getNextNotEmpty()) {
 
-			JSONObject jo_el = new JSONObject();
-			jo_el.put("id", id++);
-			jo_el.put("name", "Left Rail");
-			jo_el.put("type", "RAIL");
-			jo_el.put("data", "{}");
-			jo_el.put("conn", new JSONArray().put(id));					
-			ja_els.put(jo_el);
+				Ir.setId(id++);
 
-			for (LadderInstruction Ir = rung.getFirst(); Ir != null; Ir = Ir.getNext()) {
-				if (Ir.getLabel().isEmpty()) {
+				for (LadderInstruction Ir_down = Ir.getDownNotEmpty(); Ir_down != null; Ir_down = Ir_down.getDownNotEmpty()) {
+					Ir_down.setId(id++);
+				}
+			}
+		}
+
+		/* resolv cons */
+		for (Rung rung: ladderProgram.getRungs()) {
+			for (LadderInstruction Ir = rung.getFirst(); Ir != null; Ir = Ir.getNextNotEmpty()) {
+
+				LadderInstruction Ir_next = Ir.getNextNotEmpty();				
+				if (Ir_next != null) {
+					Ir.addCon(Ir_next.getId());
+				} else {
 					continue;
 				}
 
+				for (LadderInstruction Ir_next_down = Ir_next.getDownNotEmpty(); Ir_next_down != null; Ir_next_down = Ir_next_down.getDownNotEmpty()) {
+					Ir.addCon(Ir_next_down.getId());
+				}
+
+				for (LadderInstruction Ir_down = Ir.getDownNotEmpty(); Ir_down != null; Ir_down = Ir_down.getDownNotEmpty()) {
+					Ir_down.setCons(new ArrayList<Integer>(Ir.getCons()));
+				}
+			}
+		}
+
+		/* Rungs */
+		JSONArray ja_rungs = new JSONArray();
+		for (Rung rung: ladderProgram.getRungs()) {
+			JSONArray ja_els = new JSONArray();
+
+			JSONObject jo_el = new JSONObject();
+			for (LadderInstruction Ir = rung.getFirst(); Ir != null; Ir = Ir.getNextNotEmpty()) {
+
 				jo_el = new JSONObject();
-				jo_el.put("id", id++);
+				jo_el.put("id", Ir.getId());
 				jo_el.put("name", "");
 				jo_el.put("type", Ir.getTypeStr());
 				jo_el.put("data", new JSONObject(Ir.getData()));
-				jo_el.put("conn", new JSONArray().put(id));		
+				jo_el.put("conn", new JSONArray(Ir.getCons()));		
 				
 				ja_els.put(jo_el);
+
+				for (LadderInstruction Ir_down = Ir.getDown(); Ir_down != null; Ir_down = Ir_down.getDown()) {
+					if (Ir_down.getLabel().isEmpty()) {
+						continue;
+					}
+	
+					jo_el = new JSONObject();
+					jo_el.put("id", Ir_down.getId());
+					jo_el.put("name", "");
+					jo_el.put("type", Ir_down.getTypeStr());
+					jo_el.put("data", new JSONObject(Ir_down.getData()));
+					jo_el.put("conn", new JSONArray(Ir_down.getCons()));		
+						
+					ja_els.put(jo_el);
+				}
+	
 			}
 			ja_rungs.put(new JSONObject().put("elements", ja_els));
-
-			
-			jo_el = new JSONObject();
-			jo_el.put("id", id++);
-			jo_el.put("name", "Right Rail");
-			jo_el.put("type", "RAIL");
-			jo_el.put("data", "{}");
-			jo_el.put("conn", new JSONArray());					
-			ja_els.put(jo_el);
 
 		}
 		jo.put("rungs", ja_rungs);

@@ -20,6 +20,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
 public abstract class LadderInstruction extends LadderSymbol implements Comparable<LadderInstruction>{
 
 	private static final long serialVersionUID = 1L;
+	private int id;
+	private List<Integer> cons;
 	private String label; 
 	private DeviceMemory memory;
 	private LadderInstruction up;
@@ -50,6 +53,27 @@ public abstract class LadderInstruction extends LadderSymbol implements Comparab
 		super(width, height, row, col);
 		this.memory = memory;
 		this.label = "";
+		cons = new ArrayList<>();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public List<Integer> getCons() {
+		return cons;
+	}
+
+	public void addCon(int con) {
+		cons.add(con);
+	}
+
+	public void setCons(List<Integer> cons) {
+		this.cons = cons;
 	}
 
 	public DeviceMemory getMemory() {
@@ -91,6 +115,18 @@ public abstract class LadderInstruction extends LadderSymbol implements Comparab
 	public void setPrevious(LadderInstruction previous) {
 		this.previous = previous;
 	} 
+
+	public LadderInstruction getNextNotEmpty() {
+		LadderInstruction Ir_next;
+		for (Ir_next = next; Ir_next != null && Ir_next.getLabel().isEmpty(); Ir_next = Ir_next.getNext());
+		return Ir_next;
+	}
+
+	public LadderInstruction getDownNotEmpty() {
+		LadderInstruction Ir_down;
+		for (Ir_down = down; Ir_down != null && Ir_down.getLabel().isEmpty(); Ir_down = Ir_down.getDown());
+		return Ir_down;
+	}
 
 	public void clearLink(){
 		next = null;
