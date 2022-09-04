@@ -26,6 +26,7 @@ public class ProgramProperties implements Serializable{
 	private String codeOption;
 	private String wifiSsid;
 	private String wifiPassword;
+	private String ipAddress;
 	private String brokerAddress;
 	private Integer brokerPort;
 	private String mqttClientID;
@@ -45,6 +46,7 @@ public class ProgramProperties implements Serializable{
 	private Integer telemetrySeconds;
 	
 	public ProgramProperties() {
+		ipAddress = "192.168.0.1";
 		wifiSsid = "";
 		wifiPassword = "";
 		brokerAddress = "";
@@ -77,6 +79,13 @@ public class ProgramProperties implements Serializable{
 	public void setWifiSsid(String wifiSsid) {
 		this.wifiSsid = wifiSsid;
 	}
+	public String getipAddress() {
+		return ipAddress;
+	}
+	public void setipAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+	
 	public String getWifiPassword() {
 		return wifiPassword;
 	}

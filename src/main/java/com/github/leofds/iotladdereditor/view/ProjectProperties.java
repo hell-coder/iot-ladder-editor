@@ -70,6 +70,7 @@ import com.github.leofds.iotladdereditor.i18n.Strings;
 import com.github.leofds.iotladdereditor.ladder.LadderProgram;
 import com.github.leofds.iotladdereditor.ladder.ProgramProperties;
 import com.github.leofds.iotladdereditor.util.FileUtils;
+import javax.swing.border.EtchedBorder;
 
 public class ProjectProperties extends JDialog {
 
@@ -102,6 +103,7 @@ public class ProjectProperties extends JDialog {
 	private JComboBox<CodeOptions> comboBox_code;
 	private JTable tablePinMapping;
 	private Device device;
+	private JTextField textFieldIpAddr;
 	
 	
 
@@ -509,6 +511,23 @@ public class ProjectProperties extends JDialog {
 		panel_1.add(textFieldPassword);
 		textFieldPassword.setColumns(10);
 
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setLayout(null);
+		panel_1_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(128, 128, 128)), "Connection parameters", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1_1.setBounds(10, 9, 370, 98);
+		contentPanel.add(panel_1_1);
+		
+		JLabel lblPlcIp = new JLabel("PLC IP");
+		lblPlcIp.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPlcIp.setBounds(12, 56, 131, 16);
+		panel_1_1.add(lblPlcIp);
+		
+		textFieldIpAddr = new JTextField();
+		textFieldIpAddr.setText((String) null);
+		textFieldIpAddr.setColumns(10);
+		textFieldIpAddr.setBounds(155, 55, 162, 22);
+		panel_1_1.add(textFieldIpAddr);
+
 		loadFields();
 	}
 
@@ -517,7 +536,7 @@ public class ProjectProperties extends JDialog {
 		ProgramProperties properties = ladderProgram.getProperties();
 
 		try {
-			URL url = new URL("http://plc/wifi_ssid");
+			URL url = new URL("http://" +properties.getipAddress()+ "/wifi_ssid");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			int status = con.getResponseCode();
@@ -538,7 +557,7 @@ public class ProjectProperties extends JDialog {
 		}
 
 		try {
-			URL url = new URL("http://plc/wifi_pass");
+			URL url = new URL("http://" +properties.getipAddress()+ "/wifi_pass");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			int status = con.getResponseCode();
@@ -566,7 +585,7 @@ public class ProjectProperties extends JDialog {
 		try {
 			byte[] val = properties.getWifiSsid().getBytes();
 
-			URL url = new URL("http://plc/wifi_ssid");
+			URL url = new URL("http://" +properties.getipAddress()+ "/wifi_ssid");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -634,6 +653,7 @@ public class ProjectProperties extends JDialog {
 */
 		textFieldSsid.setText( properties.getWifiSsid() );
 		textFieldPassword.setText( properties.getWifiPassword() );
+		textFieldIpAddr.setText(properties.getipAddress());
 /*
 		textFieldBrokerAddress.setText( properties.getBrokerAddress() );
 		textFieldBokerPort.setText( ""+properties.getBrokerPort() );
@@ -667,6 +687,7 @@ public class ProjectProperties extends JDialog {
 
 			properties.setWifiSsid( textFieldSsid.getText() );
 			properties.setWifiPassword( textFieldPassword.getText() );
+			properties.setipAddress(textFieldIpAddr.getText());
 			WriteToDev();
 /*			properties.setBrokerAddress( textFieldBrokerAddress.getText() );
 			try {
