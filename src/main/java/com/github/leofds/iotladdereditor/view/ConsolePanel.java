@@ -23,6 +23,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
+import java.awt.Font;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import java.awt.event.ActionListener;
 
 public class ConsolePanel extends JPanel{
 
@@ -30,6 +40,9 @@ public class ConsolePanel extends JPanel{
 	private JScrollPane scroll;
 	private JTextArea text;
 	private DefaultCaret caret;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmNewMenuItem_1;
 
 	public ConsolePanel() {
 		super(new BorderLayout(0,0));
@@ -41,10 +54,33 @@ public class ConsolePanel extends JPanel{
 		textPanel.setLayout(new BorderLayout(0, 0));
 
 		text = new JTextArea();
+		text.setLineWrap(true);
+		text.setFont(new Font("Verdana", Font.PLAIN, 12));
 		text.setEditable(false);
 		caret = (DefaultCaret) text.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scroll = new JScrollPane(text,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		popupMenu = new JPopupMenu();
+		popupMenu.setLabel("");
+		addPopup(text, popupMenu);
+		
+		mntmNewMenuItem = new JMenuItem("CLEAR");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clear();
+			}
+		});
+		popupMenu.add(mntmNewMenuItem);
+		
+		mntmNewMenuItem_1 = new JMenuItem("Copy to clipboard");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				text.selectAll();
+				text.copy();
+			}
+		});
+		popupMenu.add(mntmNewMenuItem_1);
 
 		textPanel.add(scroll, BorderLayout.CENTER);
 	}
@@ -59,5 +95,22 @@ public class ConsolePanel extends JPanel{
 
 	public void clear(){
 		text.setText("");
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

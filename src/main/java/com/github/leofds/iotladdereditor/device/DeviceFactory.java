@@ -1,71 +1,22 @@
-/*******************************************************************************
- * Copyright (C) 2021 Leonardo Fernandes
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+
 package com.github.leofds.iotladdereditor.device;
 
 public class DeviceFactory {
 
 	public static Device createEsp32(){
-		Device device  = new Device("ESP32");
+		Device device  = new Device("PLCUA");
 		Peripheral output = new Peripheral("Output", "Q");
 		Peripheral input = new Peripheral("Input", "I");
-
-		PeripheralIO pc1out = new PeripheralIO("Q1", Boolean.class, "2", "PIN_Q01", IO.OUTPUT);
-		PeripheralIO pc2out = new PeripheralIO("Q2", Boolean.class, "4", "PIN_Q02", IO.OUTPUT);
-		PeripheralIO pc3out = new PeripheralIO("Q3", Boolean.class, "12", "PIN_Q03", IO.OUTPUT);
-		PeripheralIO pc4out = new PeripheralIO("Q4", Boolean.class, "13", "PIN_Q04", IO.OUTPUT);
-		PeripheralIO pc5out = new PeripheralIO("Q5", Boolean.class, "33", "PIN_Q05", IO.OUTPUT);
-		PeripheralIO pc6out = new PeripheralIO("Q6", Boolean.class, "25", "PIN_Q06", IO.OUTPUT);
-		PeripheralIO pc7out = new PeripheralIO("Q7", Boolean.class, "26", "PIN_Q07", IO.OUTPUT);
-		PeripheralIO pc8out = new PeripheralIO("Q8", Boolean.class, "27", "PIN_Q08", IO.OUTPUT);
-
-		PeripheralIO pc1in = new PeripheralIO("I1", Boolean.class, "14", "PIN_I01", IO.INPUT);
-		PeripheralIO pc2in = new PeripheralIO("I2", Boolean.class, "16", "PIN_I02", IO.INPUT);
-		PeripheralIO pc3in = new PeripheralIO("I3", Boolean.class, "17", "PIN_I03", IO.INPUT);
-		PeripheralIO pc4in = new PeripheralIO("I4", Boolean.class, "18", "PIN_I04", IO.INPUT);
-		PeripheralIO pc5in = new PeripheralIO("I5", Boolean.class, "19", "PIN_I05", IO.INPUT);
-		PeripheralIO pc6in = new PeripheralIO("I6", Boolean.class, "21", "PIN_I06", IO.INPUT);
-		PeripheralIO pc7in = new PeripheralIO("I7", Boolean.class, "22", "PIN_I07", IO.INPUT);
-		PeripheralIO pc8in = new PeripheralIO("I8", Boolean.class, "23", "PIN_I08", IO.INPUT);
-		PeripheralIO pc9in = new PeripheralIO("I9", Boolean.class, "24", "PIN_I09", IO.INPUT);
-		PeripheralIO pc10in = new PeripheralIO("I10", Boolean.class, "28", "PIN_I10", IO.INPUT);
-		PeripheralIO pc11in = new PeripheralIO("I11", Boolean.class, "29", "PIN_I11", IO.INPUT);
-		PeripheralIO pc12in = new PeripheralIO("I12", Boolean.class, "30", "PIN_I12", IO.INPUT);
-
-		output.addPeripheralItem(pc1out);
-		output.addPeripheralItem(pc2out);
-		output.addPeripheralItem(pc3out);
-		output.addPeripheralItem(pc4out);
-		output.addPeripheralItem(pc5out);
-		output.addPeripheralItem(pc6out);
-		output.addPeripheralItem(pc7out);
-		output.addPeripheralItem(pc8out);
-		input.addPeripheralItem(pc1in);
-		input.addPeripheralItem(pc2in);
-		input.addPeripheralItem(pc3in);
-		input.addPeripheralItem(pc4in);
-		input.addPeripheralItem(pc5in);
-		input.addPeripheralItem(pc6in);
-		input.addPeripheralItem(pc7in);
-		input.addPeripheralItem(pc8in);
-		input.addPeripheralItem(pc9in);
-		input.addPeripheralItem(pc10in);
-		input.addPeripheralItem(pc11in);
-		input.addPeripheralItem(pc12in);
-
+		
+		
+		for (int i = 1; i < 9; i++) {
+			output.addPeripheralItem(new PeripheralIO("Q" + i, Boolean.class, "", IO.OUTPUT,""));
+			}
+		
+		for (int i = 1; i < 13; i++) {
+			input.addPeripheralItem(new PeripheralIO("I"+i, Boolean.class, "", IO.INPUT,""));
+			}
+		
 		device.addPeripheral(output);
 		device.addPeripheral(input);
 		return device;

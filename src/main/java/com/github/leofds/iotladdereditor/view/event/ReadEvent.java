@@ -32,11 +32,14 @@ import com.github.leofds.iotladdereditor.application.Mediator;
 import com.github.leofds.iotladdereditor.compiler.Compiler;
 import com.github.leofds.iotladdereditor.view.event.Subject.SubMsg;
 import com.github.leofds.iotladdereditor.compiler.generator.JsonGenerator;
+import com.github.leofds.iotladdereditor.ladder.LadderProgram;
+import com.github.leofds.iotladdereditor.ladder.ProgramProperties;
 
 
 public class ReadEvent implements Observer {
 
 	private Subject subject;
+	private LadderProgram ladderProgram;
 
 	public ReadEvent(Subject subject) {
 		subject.addObserver(this);
@@ -45,9 +48,11 @@ public class ReadEvent implements Observer {
 
 	private void Read() {
 		Mediator me = Mediator.getInstance();
+		ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
+		ProgramProperties properties = ladderProgram.getProperties();
 
 		try {
-			URL url = new URL("http://plc/ladder_program");
+			URL url = new URL("http://" +properties.getipAddress()+ "/ladder_program");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			int status = con.getResponseCode();
@@ -62,6 +67,7 @@ public class ReadEvent implements Observer {
 			}
 			in.close();
 			con.disconnect();
+			me.clearConsole();
 			me.outputConsoleMessage(content.toString());
 		} catch (Exception e) {
 			e.printStackTrace();

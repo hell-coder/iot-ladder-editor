@@ -52,6 +52,7 @@ public class MemoryPanel extends JPanel{
 		LadderProgram ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
 		
 		tree = new MemoryTree(new CustomTreeModel( TreeFactory.createMemoryTree( ladderProgram ) ));
+		tree.setFont(new Font("Arial", Font.PLAIN, 12));
 		tree.setCellRenderer(new CustomTreeRender());
 		JScrollPane treeScroller = new JScrollPane(tree);
 		

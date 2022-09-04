@@ -216,7 +216,7 @@ public class Esp32ArduinoCodeGenerator implements CodeGenerator{
 		c.newLine();
 		for(Peripheral peripheral : device.getPeripherals()) {
 			for(PeripheralIO peripheralIO : peripheral.getPeripheralItems()) {
-				c.addl("#define "+peripheralIO.getPath()+" "+peripheralIO.getPin());
+				c.addl("#define "+peripheralIO.getPath()+" "+peripheralIO.getSymbol());
 			}
 		}
 	}
