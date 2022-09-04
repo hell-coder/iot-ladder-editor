@@ -47,6 +47,7 @@ public class ProgramProperties implements Serializable{
 	
 	public ProgramProperties() {
 		ipAddress = "172.16.0.32";
+
 		wifiSsid = "";
 		wifiPassword = "";
 		brokerAddress = "";

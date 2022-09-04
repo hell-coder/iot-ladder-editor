@@ -523,6 +523,23 @@ public class ProjectProperties extends JDialog {
 		textFieldIpAddr.setBounds(155, 55, 162, 22);
 		panel_1_1.add(textFieldIpAddr);
 
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setLayout(null);
+		panel_1_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(128, 128, 128)), "Connection parameters", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1_1.setBounds(10, 9, 370, 98);
+		contentPanel.add(panel_1_1);
+		
+		JLabel lblPlcIp = new JLabel("PLC IP");
+		lblPlcIp.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPlcIp.setBounds(12, 56, 131, 16);
+		panel_1_1.add(lblPlcIp);
+		
+		textFieldIpAddr = new JTextField();
+		textFieldIpAddr.setText((String) null);
+		textFieldIpAddr.setColumns(10);
+		textFieldIpAddr.setBounds(155, 55, 162, 22);
+		panel_1_1.add(textFieldIpAddr);
+
 		loadFields();
 	}
 
@@ -688,6 +705,12 @@ public class ProjectProperties extends JDialog {
 //			CodeOptions codeOpt = (CodeOptions) comboBox_code.getSelectedItem();
 			ProgramProperties properties = ladderProgram.getProperties();
 //			properties.setCodeOption(codeOpt);
+
+
+			properties.setWifiSsid( textFieldSsid.getText() );
+			properties.setWifiPassword( textFieldPassword.getText() );
+			properties.setipAddress(textFieldIpAddr.getText());
+			WriteToDev();
 
 /*			properties.setBrokerAddress( textFieldBrokerAddress.getText() );
 			try {
