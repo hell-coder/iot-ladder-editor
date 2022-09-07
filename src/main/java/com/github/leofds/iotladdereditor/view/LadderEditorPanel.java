@@ -72,6 +72,7 @@ import com.github.leofds.iotladdereditor.view.dnd.CollageTransferHandler;
 import com.github.leofds.iotladdereditor.view.dnd.DragAndDropLock;
 import com.github.leofds.iotladdereditor.view.dnd.GhostGlassPane;
 import com.github.leofds.iotladdereditor.view.dnd.TravelBackToOrigin;
+import java.awt.SystemColor;
 
 public class LadderEditorPanel extends JPanel implements MouseListener, MouseWheelListener, DropTargetListener, KeyListener, DragGestureListener, DragSourceMotionListener, DragSourceListener{
 
@@ -93,7 +94,7 @@ public class LadderEditorPanel extends JPanel implements MouseListener, MouseWhe
 		dragSource.addDragSourceMotionListener(this);
 		setDropTarget(new DropTarget(this, this));
 		setPreferredSize(dimension);
-		setBackground(Color.white);
+		setBackground(Color.WHITE);
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		setFocusable(true);

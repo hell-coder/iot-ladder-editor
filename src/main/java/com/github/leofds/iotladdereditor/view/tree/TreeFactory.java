@@ -72,7 +72,7 @@ public class TreeFactory {
 		for(Peripheral peripheral: device.getPeripherals()){
 			CustomTreeNode node = new CustomTreeNode(peripheral.getName(),new ImageIcon(TreeFactory.class.getResource("/images/IO_16x16.png")));
 			for(PeripheralIO peripheralItem:peripheral.getPeripheralItems()){
-				if(peripheralItem.getPin() != null && !peripheralItem.getPin().isEmpty()) {
+				if(peripheralItem.getSymbol() != null && !peripheralItem.getSymbol().isEmpty()) {
 					node.addChild(new CustomTreeNode(peripheralItem.getName(),peripheralItem,new ImageIcon(TreeFactory.class.getResource("/images/IOB_16x16.png"))));
 				}
 			}

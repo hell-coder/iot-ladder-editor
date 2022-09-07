@@ -46,7 +46,8 @@ public class ProgramProperties implements Serializable{
 	private Integer telemetrySeconds;
 	
 	public ProgramProperties() {
-		ipAddress = "192.168.0.1";
+		ipAddress = "172.16.0.32";
+
 		wifiSsid = "";
 		wifiPassword = "";
 		brokerAddress = "";
@@ -92,6 +93,7 @@ public class ProgramProperties implements Serializable{
 	public void setWifiPassword(String wifiPassword) {
 		this.wifiPassword = wifiPassword;
 	}
+	
 	public String getBrokerAddress() {
 		return brokerAddress;
 	}

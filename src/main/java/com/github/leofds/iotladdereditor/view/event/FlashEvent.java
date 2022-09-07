@@ -32,11 +32,14 @@ import com.github.leofds.iotladdereditor.application.Mediator;
 import com.github.leofds.iotladdereditor.compiler.Compiler;
 import com.github.leofds.iotladdereditor.view.event.Subject.SubMsg;
 import com.github.leofds.iotladdereditor.compiler.generator.JsonGenerator;
+import com.github.leofds.iotladdereditor.ladder.LadderProgram;
+import com.github.leofds.iotladdereditor.ladder.ProgramProperties;
 
 
 public class FlashEvent implements Observer {
 
 	private Subject subject;
+	private LadderProgram ladderProgram;
 
 	public FlashEvent(Subject subject) {
 		subject.addObserver(this);
@@ -46,11 +49,14 @@ public class FlashEvent implements Observer {
 	private void Flash() {
 
 		Mediator me = Mediator.getInstance();
+		
+		ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
+		ProgramProperties properties = ladderProgram.getProperties();
 
 		try {
 			byte[] JsonProgram = JsonGenerator.generate(me.getProject().getLadderProgram()).getBytes(StandardCharsets.UTF_8);;
 
-			URL url = new URL("http://plc/ladder_program");
+			URL url = new URL("http://" +properties.getipAddress()+ "/ladder_program");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -80,32 +86,6 @@ public class FlashEvent implements Observer {
 
 	}
 
-	private void Read() {
-		Mediator me = Mediator.getInstance();
-
-		try {
-			URL url = new URL("http://plc/ladder_program");
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			int status = con.getResponseCode();
-			me.outputConsoleMessage("Code:" + status);
-
-			BufferedReader in = new BufferedReader(
-			new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer content = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
-				content.append(inputLine);
-			}
-			in.close();
-			con.disconnect();
-			me.outputConsoleMessage(content.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-			me.outputConsoleMessage(e.getMessage());
-		}
-
-	}
 
 	@Override
 	public void update(Observable o, Object arg) {

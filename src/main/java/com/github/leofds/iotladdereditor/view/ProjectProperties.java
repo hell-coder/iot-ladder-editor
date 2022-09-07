@@ -100,7 +100,6 @@ public class ProjectProperties extends JDialog {
 	private JCheckBox checkBoxTelemetryOutput;
 	private JCheckBox checkBoxTelemetryInput;
 	private LadderProgram ladderProgram;
-	private JComboBox<CodeOptions> comboBox_code;
 	private JTable tablePinMapping;
 	private Device device;
 	private JTextField textFieldIpAddr;
@@ -425,7 +424,7 @@ public class ProjectProperties extends JDialog {
 										});
 										btnGenerateClientID.setBounds(639, 74, 92, 21);
 										panel_2.add(btnGenerateClientID);
-
+		*/
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab(Strings.pinMapping(), null, panel_3, null);
 		panel_3.setLayout(null);
@@ -449,7 +448,7 @@ public class ProjectProperties extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addOutput();
+		//		addOutput();
 			}
 		});
 		JMenuItem addInputItem = new JMenuItem(Strings.addInput());
@@ -457,7 +456,7 @@ public class ProjectProperties extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addInput();
+		//		addInput();
 			}
 		});
 
@@ -465,26 +464,13 @@ public class ProjectProperties extends JDialog {
 		popupMenuPinMapping.add(addOutputItem);
 		popupMenuPinMapping.add(addInputItem);
 
-		tablePinMapping.setComponentPopupMenu(popupMenuPinMapping);
+		//tablePinMapping.setComponentPopupMenu(popupMenuPinMapping);
 
 		JScrollPane scrollPane = new JScrollPane(tablePinMapping);
-		scrollPane.setBounds(199, 26, 359, 220);
+		scrollPane.setBounds(10, 26, 755, 220);
 		panel_3.add(scrollPane);
 
 
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Strings.codeGenerator(), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBounds(10, 9, 369, 98);
-		contentPanel.add(panel);
-		panel.setLayout(null);
-
-		comboBox_code = new JComboBox<CodeOptions>();
-		comboBox_code.setBounds(72, 40, 229, 21);
-		panel.add(comboBox_code);
-		comboBox_code.setModel(new DefaultComboBoxModel<CodeOptions>(CodeOptions.values()));
-		comboBox_code.setFont(new Font("Tahoma", Font.PLAIN, 12));
-
-		*/
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, Strings.wifi(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(391, 9, 399, 98);
@@ -492,24 +478,50 @@ public class ProjectProperties extends JDialog {
 		panel_1.setLayout(null);
 
 		JLabel lblSsid = new JLabel(Strings.ssid());
-		lblSsid.setBounds(12, 31, 131, 16);
+		lblSsid.setBounds(12, 31, 51, 16);
 		panel_1.add(lblSsid);
 		lblSsid.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		textFieldSsid = new JTextField();
-		textFieldSsid.setBounds(155, 28, 162, 22);
+		textFieldSsid.setBounds(73, 28, 162, 22);
 		panel_1.add(textFieldSsid);
 		textFieldSsid.setColumns(10);
 
 		JLabel lblPassword = new JLabel(Strings.password());
-		lblPassword.setBounds(12, 56, 131, 16);
+		lblPassword.setBounds(12, 56, 51, 16);
 		panel_1.add(lblPassword);
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		textFieldPassword = new JTextField();
-		textFieldPassword.setBounds(155, 55, 162, 22);
+		textFieldPassword.setBounds(73, 53, 162, 22);
 		panel_1.add(textFieldPassword);
 		textFieldPassword.setColumns(10);
+		
+		JButton btnUpdateWifi = new JButton("Update");
+		btnUpdateWifi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateWifi();
+			}
+		});
+		btnUpdateWifi.setBounds(245, 28, 110, 25);
+		panel_1.add(btnUpdateWifi);
+		
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setBounds(11, 9, 370, 98);
+		contentPanel.add(panel_1_1);
+		panel_1_1.setLayout(null);
+		panel_1_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(128, 128, 128)), "Connection parameters", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
+		JLabel lblPlcIp = new JLabel("PLC IP");
+		lblPlcIp.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPlcIp.setBounds(10, 58, 131, 16);
+		panel_1_1.add(lblPlcIp);
+		
+		textFieldIpAddr = new JTextField();
+		textFieldIpAddr.setText((String) null);
+		textFieldIpAddr.setColumns(10);
+		textFieldIpAddr.setBounds(155, 55, 162, 22);
+		panel_1_1.add(textFieldIpAddr);
 
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
@@ -616,7 +628,7 @@ public class ProjectProperties extends JDialog {
 		try {
 			byte[] val = properties.getWifiPassword().getBytes();
 
-			URL url = new URL("http://plc/wifi_pass");
+			URL url = new URL("http://" +properties.getipAddress()+ "/wifi_pass");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -677,6 +689,15 @@ public class ProjectProperties extends JDialog {
 		enableTelemetry( checkBoxEnableTelemetry.isSelected() );
 */
 	}
+	
+	private void updateWifi() {
+		ProgramProperties properties = ladderProgram.getProperties();
+		properties.setWifiSsid( textFieldSsid.getText() );
+		properties.setWifiPassword( textFieldPassword.getText() );
+		properties.setipAddress(textFieldIpAddr.getText());
+		WriteToDev();
+	
+	}
 
 	private void save() {
 		int dialogResult = JOptionPane.showConfirmDialog(this, Strings.confirmSaveProjectProperties(), Strings.titleSaveProjectProperties(), JOptionPane.YES_NO_OPTION);
@@ -685,10 +706,12 @@ public class ProjectProperties extends JDialog {
 			ProgramProperties properties = ladderProgram.getProperties();
 //			properties.setCodeOption(codeOpt);
 
+
 			properties.setWifiSsid( textFieldSsid.getText() );
 			properties.setWifiPassword( textFieldPassword.getText() );
 			properties.setipAddress(textFieldIpAddr.getText());
 			WriteToDev();
+
 /*			properties.setBrokerAddress( textFieldBrokerAddress.getText() );
 			try {
 				properties.setBrokerPort( Integer.parseInt( textFieldBokerPort.getText() ) );
@@ -757,47 +780,47 @@ public class ProjectProperties extends JDialog {
 		}
 	}
 	
-	private PeripheralIO createNewPin(IO io) {
-		String pinName = getAvaliablePinName(io);
-		PeripheralIO peripheralIO = null;
-		try {
-			Integer pinNumber = Integer.parseInt( (String) JOptionPane.showInputDialog(null, pinName,Strings.pinNumber(), JOptionPane.INFORMATION_MESSAGE, null, null, null));
-			String pinPath = "";
-			switch(io) {
-			case INPUT:
-				pinPath = "PIN_I"+String.format("%02d", pinNumber);
-				break;
-			default:
-				pinPath = "PIN_Q"+String.format("%02d", pinNumber);	
-			}
-			peripheralIO = new PeripheralIO(pinName, Boolean.class, ""+pinNumber, pinPath, io);
-		}catch (Exception e) {
-			JOptionPane.showMessageDialog(null, Strings.invalidPinNumber());
-		}
-		return peripheralIO;
-	}
+//	private PeripheralIO createNewPin(IO io) {
+//		String pinName = getAvaliablePinName(io);
+//		PeripheralIO peripheralIO = null;
+//		try {
+//			Integer pinNumber = Integer.parseInt( (String) JOptionPane.showInputDialog(null, pinName,Strings.pinNumber(), JOptionPane.INFORMATION_MESSAGE, null, null, null));
+//			String pinPath = "";
+//			switch(io) {
+//			case INPUT:
+//				pinPath = "PIN_I"+String.format("%02d", pinNumber);
+//				break;
+//			default:
+//				pinPath = "PIN_Q"+String.format("%02d", pinNumber);	
+//			}
+//			peripheralIO = new PeripheralIO(pinName, Boolean.class, ""+pinNumber, pinPath, io);
+//		}catch (Exception e) {
+//			JOptionPane.showMessageDialog(null, Strings.invalidPinNumber());
+//		}
+//		return peripheralIO;
+//	}
 	
-	private void addInput() {
-		PeripheralIO peripheralIO = createNewPin(IO.INPUT);
-		if(peripheralIO != null) {
-			Peripheral peripheral = device.getPeripheralBySymbol("I");
-			if(peripheral != null) {
-				peripheral.addPeripheralItem(peripheralIO);
-				device.sort();
-			}
-		}
-	}
-	
-	private void addOutput() {
-		PeripheralIO peripheralIO = createNewPin(IO.OUTPUT);
-		if(peripheralIO != null) {
-			Peripheral peripheral = device.getPeripheralBySymbol("Q");
-			if(peripheral != null) {
-				peripheral.addPeripheralItem(peripheralIO);
-				device.sort();
-			}
-		}
-	}
+//	private void addInput() {
+//		PeripheralIO peripheralIO = createNewPin(IO.INPUT);
+//		if(peripheralIO != null) {
+//			Peripheral peripheral = device.getPeripheralBySymbol("I");
+//			if(peripheral != null) {
+//				peripheral.addPeripheralItem(peripheralIO);
+//				device.sort();
+//			}
+//		}
+//	}
+//	
+//	private void addOutput() {
+//		PeripheralIO peripheralIO = createNewPin(IO.OUTPUT);
+//		if(peripheralIO != null) {
+//			Peripheral peripheral = device.getPeripheralBySymbol("Q");
+//			if(peripheral != null) {
+//				peripheral.addPeripheralItem(peripheralIO);
+//				device.sort();
+//			}
+//		}
+//	}
 	
 	private void enableSsl(boolean enable) {
 		if(enable) {
@@ -856,7 +879,7 @@ public class ProjectProperties extends JDialog {
 	class PinModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
-		private String[] columnNames = {Strings.name(),"pin", "type"};
+		private String[] columnNames = {"Address","Symbol", "type","Description"};
 		private Device device;
 
 		public PinModel(Device device) {
@@ -892,7 +915,7 @@ public class ProjectProperties extends JDialog {
 						case 0:
 							return item.getName();
 						case 1:
-							return item.getPin();
+							return item.getSymbol();
 						case 2:
 							return peripheral.getName();
 						}
@@ -917,7 +940,7 @@ public class ProjectProperties extends JDialog {
 			for(Peripheral peripheral: device.getPeripherals()) {
 				for(PeripheralIO item: peripheral.getPeripheralItems()) {
 					if(rowIndex == count) {
-						item.setPin((String) aValue);
+						item.setSymbol((String) aValue);
 					}
 					count++;
 				}

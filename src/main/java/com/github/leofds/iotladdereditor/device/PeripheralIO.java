@@ -21,30 +21,32 @@ import java.io.Serializable;
 public class PeripheralIO extends DeviceMemory implements Serializable{
 
 	private static final long serialVersionUID = 3470318238269022501L;
-	private String pin;
+	private String ioSymbol;
 	private String path;
+	private String description;
 	private IO io;
 	
-	public PeripheralIO(String name, Class<?> type, String pin, IO io) {
-		super(name, type);
-		this.pin = pin;
+	public PeripheralIO(String addr, Class<?> type, String symbol, IO io, String descr) {
+		super(addr, type);
+		this.ioSymbol = symbol;
 		this.path = null;
 		this.io = io;
+		this.description = descr;
 	}
 	
-	public PeripheralIO(String name, Class<?> type, String id, String path, IO io) {
-		super(name, type);
-		this.pin = id;
-		this.path = path;
-		this.io = io;
+//	public PeripheralIO(String addr, Class<?> type, String id, String path, IO io) {
+//		super(addr, type);
+//		this.ioSymbol = id;
+//		this.path = path;
+//		this.io = io;
+//	}
+
+	public String getSymbol() {
+		return ioSymbol;
 	}
 
-	public String getPin() {
-		return pin;
-	}
-
-	public void setPin(String pin) {
-		this.pin = pin;
+	public void setSymbol(String pin) {
+		this.ioSymbol = pin;
 	}
 
 	public String getPath() {
