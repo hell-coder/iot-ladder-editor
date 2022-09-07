@@ -235,6 +235,14 @@ public abstract class OperatorInstruction extends LadderInstruction{
 			screen.addMemoryB(flaotMem);
 			screen.addMemoryD(flaotMem);
 		}
+		for(TimerInstruction timer: ladderProgram.getAllTimers()){
+			screen.addMemoryA(timer.getAccumMemory());
+			screen.addMemoryB(timer.getAccumMemory());
+		}
+		for(CountInstruction count: ladderProgram.getAllCounts()){
+			screen.addMemoryA(count.getAccumMemory());
+			screen.addMemoryB(count.getAccumMemory());
+		}
 		screen.setSourceA(getSourceA());
 		screen.setSourceB(getSourceB());
 		screen.setDestiny(getDestiny());

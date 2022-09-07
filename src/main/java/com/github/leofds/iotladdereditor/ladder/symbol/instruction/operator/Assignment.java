@@ -157,24 +157,10 @@ public class Assignment extends OperatorInstruction{
 			screen.addMemoryD(flaotMem);
 		}
 		for(TimerInstruction timer: ladderProgram.getAllTimers()){
-			screen.addMemoryA(timer.getPresetMemory());
 			screen.addMemoryA(timer.getAccumMemory());
-			screen.addMemoryA(timer.getDoneMemory());
-			screen.addMemoryA(timer.getEnableMemory());
-			screen.addMemoryD(timer.getPresetMemory());
-			screen.addMemoryD(timer.getAccumMemory());
-			screen.addMemoryD(timer.getDoneMemory());
-			screen.addMemoryD(timer.getEnableMemory());
 		}
 		for(CountInstruction count: ladderProgram.getAllCounts()){
-			screen.addMemoryA(count.getPresetMemory());
 			screen.addMemoryA(count.getAccumMemory());
-			screen.addMemoryA(count.getDoneMemory());
-			screen.addMemoryA(count.getCountMemory());
-			screen.addMemoryD(count.getPresetMemory());
-			screen.addMemoryD(count.getAccumMemory());
-			screen.addMemoryD(count.getDoneMemory());
-			screen.addMemoryD(count.getCountMemory());
 		}
 		screen.setSourceA(getSourceA());
 		screen.setDestiny(getDestiny());

@@ -148,10 +148,16 @@ public class Not extends OperatorInstruction{
 		for (DeviceMemory flaotMem : floatMems) {
 			screen.addMemoryA(flaotMem);
 		}
+		for(TimerInstruction timer: ladderProgram.getAllTimers()){
+			screen.addMemoryA(timer.getAccumMemory());
+		}
+		for(CountInstruction count: ladderProgram.getAllCounts()){
+			screen.addMemoryA(count.getAccumMemory());
+		}
 		screen.setSourceA(getSourceA());
 		screen.setDestiny(getDestiny());
 	}
-	
+
 	@Override
 	public void afterShowScreen(DialogScreen dialog) {
 		NotPropertyScreen screen = (NotPropertyScreen) dialog;

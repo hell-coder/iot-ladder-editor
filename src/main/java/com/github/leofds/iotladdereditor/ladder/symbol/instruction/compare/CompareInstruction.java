@@ -194,6 +194,12 @@ public abstract class CompareInstruction extends LadderInstruction{
 			screen.addMemoryA(flaotMem);
 			screen.addMemoryB(flaotMem);
 		}
+		for(TimerInstruction timer: ladderProgram.getAllTimers()){
+			screen.addMemoryA(timer.getAccumMemory());
+		}
+		for(CountInstruction count: ladderProgram.getAllCounts()){
+			screen.addMemoryA(count.getAccumMemory());
+		}
 		screen.setSourceA(getSourceA());
 		screen.setSourceB(getSourceB());
 	}
