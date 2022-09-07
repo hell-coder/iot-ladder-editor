@@ -18,12 +18,15 @@ package com.github.leofds.iotladdereditor.ladder.symbol.instruction.timer.view;
 
 import java.awt.Dimension;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -34,12 +37,16 @@ import com.github.leofds.iotladdereditor.ladder.rung.Rung;
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.LadderInstruction;
 import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
 import com.github.leofds.iotladdereditor.ladder.view.factory.FieldFactory;
+import com.github.leofds.iotladdereditor.ladder.view.listener.ComboCustomActionListener;
+import com.github.leofds.iotladdereditor.ladder.view.listener.FloatKeyListener;
 
 public class TimerPropertyScreen extends DialogScreen{
 
 	private static final long serialVersionUID = 1L;
 	private JFormattedTextField ftName;
-	private JFormattedTextField ftPreset;
+	private JTextField textPreset;
+	private JComboBox comboPreset;
+	private DefaultComboBoxModel modelPreset = new DefaultComboBoxModel();
 	private JFormattedTextField ftAccum;
 	private JFormattedTextField ftTimeBase;
 	private DeviceMemory memory;
@@ -72,11 +79,20 @@ public class TimerPropertyScreen extends DialogScreen{
 		ftName.setHorizontalAlignment(SwingConstants.RIGHT);
 		ftName.setBounds(76, 8, 86, 20);
 		panel.add(ftName);
-
+/*
 		ftPreset = FieldFactory.createLongField(-999999, 999999);
 		ftPreset.setHorizontalAlignment(SwingConstants.RIGHT);
 		ftPreset.setBounds(76, 33, 86, 20);
 		panel.add(ftPreset);
+*/
+		comboPreset = new JComboBox(modelPreset);
+		comboPreset.setBounds(76, 33, 86, 20);
+		comboPreset.addActionListener(new ComboCustomActionListener(comboPreset));
+		textPreset = (JTextField)comboPreset.getEditor().getEditorComponent();
+		comboPreset.getEditor().getEditorComponent().addKeyListener( new FloatKeyListener( textPreset ) );
+		modelPreset.addElement(Strings.constantValue());
+		comboPreset.setSelectedIndex(0);
+		panel.add(comboPreset);
 
 		ftAccum = FieldFactory.createLongField(-999999, 999999);
 		ftAccum.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -122,11 +138,40 @@ public class TimerPropertyScreen extends DialogScreen{
 				}
 			}
 		}
-		if(ftName.getText().isEmpty() || ftAccum.getText().isEmpty() || ftTimeBase.getText().isEmpty() || ftPreset.getText().isEmpty()){
+		if(ftName.getText().isEmpty() || ftAccum.getText().isEmpty() || ftTimeBase.getText().isEmpty()){
 			JOptionPane.showMessageDialog(null, Strings.invalidInstructionAttribute());
 			return false;
 		}
 		return true;
+	}
+
+	public void addPreset(DeviceMemory memory){
+		modelPreset.addElement(memory);
+	}
+
+	public DeviceMemory getSelectedPreset(){
+		int index = comboPreset.getSelectedIndex();
+		if(index==0||index==-1){
+			String str = textPreset.getText();
+			if(str.contains(".")) {
+				return new DeviceMemory(""+Float.parseFloat(textPreset.getText()), Float.class);
+			}
+			return new DeviceMemory(""+Integer.parseInt(textPreset.getText()), Integer.class);
+		}
+		return (DeviceMemory) comboPreset.getSelectedItem();
+	}
+
+	public void setPreset(DeviceMemory memory){
+		for(int i=0;i<modelPreset.getSize();i++){
+			if(modelPreset.getElementAt(i) instanceof DeviceMemory){
+				DeviceMemory mem = (DeviceMemory) modelPreset.getElementAt(i);
+				if(mem.equals(memory)){
+					comboPreset.setSelectedIndex(i);
+					return;
+				}
+			}
+		}
+		comboPreset.setSelectedItem(memory);
 	}
 
 	public String getName() {
@@ -135,14 +180,6 @@ public class TimerPropertyScreen extends DialogScreen{
 
 	public void setName(String name) {
 		this.ftName.setText(name.isEmpty() ? "" : name.substring(1));
-	}
-
-	public int getPreset() {
-		return Integer.parseInt(ftPreset.getText());
-	}
-
-	public void setPreset(int preset) {
-		this.ftPreset.setText(""+preset);
 	}
 
 	public int getAccum() {

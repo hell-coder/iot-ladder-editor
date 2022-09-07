@@ -37,7 +37,9 @@ import com.github.leofds.iotladdereditor.compiler.exception.SemanticWarnigExcept
 import com.github.leofds.iotladdereditor.device.Device;
 import com.github.leofds.iotladdereditor.device.DeviceMemory;
 import com.github.leofds.iotladdereditor.i18n.Strings;
+import com.github.leofds.iotladdereditor.ladder.LadderProgram;
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.LadderInstruction;
+import com.github.leofds.iotladdereditor.ladder.symbol.instruction.count.CountInstruction;
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.timer.view.TimerPropertyScreen;
 import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
 
@@ -45,7 +47,7 @@ public abstract class TimerInstruction extends LadderInstruction{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int preset;			//PRE
+	private DeviceMemory preset;			//PRE
 	private int accum;			//AC
 	private int base;			//B
 	private long time;			//TT
@@ -61,7 +63,7 @@ public abstract class TimerInstruction extends LadderInstruction{
 
 	public TimerInstruction() {
 		super(2, 2, 0, 0, new DeviceMemory("",TimerInstruction.class));
-		this.preset = 1;
+		this.preset = new DeviceMemory();
 		this.accum = 0;
 		this.base = 100;
 		this.done = false;
@@ -99,11 +101,11 @@ public abstract class TimerInstruction extends LadderInstruction{
 		return timeBaseMemory;
 	}
 
-	public int getPreset() {
+	public DeviceMemory getPreset() {
 		return preset;
 	}
 
-	public void setPreset(int preset) {
+	public void setPreset(DeviceMemory preset) {
 		this.preset = preset;
 	}
 
@@ -144,7 +146,7 @@ public abstract class TimerInstruction extends LadderInstruction{
 		Map<String, String> map = new HashMap<>();
 
 		map.put("num", getMemory().getName());
-		map.put("preset", String.valueOf(preset * base));
+		map.put("preset", preset.getName());
 
 		return map;
 	}
@@ -161,9 +163,7 @@ public abstract class TimerInstruction extends LadderInstruction{
 
 	@Override
 	public void analyze() throws SemanticErrorException, SemanticWarnigException {
-		if(preset >= -999999 && 
-				preset <= 999999 && 
-				accum >= -999999 && 
+		if(		accum >= -999999 && 
 				accum <= 999999 &&
 				base >= -999999 && 
 				base <= 999999){
@@ -171,9 +171,6 @@ public abstract class TimerInstruction extends LadderInstruction{
 					getMemory().getName() != null &&
 					getMemory().getType() != null &&
 					!getMemory().getName().isEmpty()){
-				if(preset <= 0){
-					throw new SemanticWarnigException(Strings.presetZeroOrNegative());
-				}
 				return;
 			}
 			throw new SemanticErrorException(Strings.invalidInstructionNumber());
@@ -213,18 +210,30 @@ public abstract class TimerInstruction extends LadderInstruction{
 	
 	@Override
 	public void beforeShowScreen(DialogScreen dialog) {
+		LadderProgram ladderProgram = Mediator.getInstance().getProject().getLadderProgram();
 		TimerPropertyScreen screen = (TimerPropertyScreen) dialog;
 		screen.setName(getMemory().getName());
 		screen.setPreset(getPreset());
 		screen.setAccum(getAccum());
 		screen.setTimeBase(getTimeBase());
+		List<DeviceMemory> intMems = ladderProgram.getIntegerMemory();
+		for (DeviceMemory intMem : intMems) {
+			screen.addPreset(intMem);
+		}
+		for(TimerInstruction timer: ladderProgram.getAllTimers()){
+			screen.addPreset(timer.getAccumMemory());
+		}
+		for(CountInstruction count: ladderProgram.getAllCounts()){
+			screen.addPreset(count.getAccumMemory());
+		}
+
 	}
 	
 	@Override
 	public void afterShowScreen(DialogScreen dialog) {
 		TimerPropertyScreen screen = (TimerPropertyScreen) dialog;
 		getMemory().setName(screen.getName());
-		setPreset(screen.getPreset());
+		setPreset(screen.getSelectedPreset());
 		setAccum(screen.getAccum());
 		setTimeBase(screen.getTimeBase());
 	}

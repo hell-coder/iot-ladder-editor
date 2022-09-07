@@ -211,7 +211,6 @@ public class ExampleFactory {
 		
 		TimerOnDelay timerOnDelay1 = new TimerOnDelay();
 		timerOnDelay1.getMemory().setName("T1");
-		timerOnDelay1.setPreset(3);
 		
 		PeripheralIO pripPeripheralIOI1 = ladderProgram.getDevice().getPeripheralIOByName("I1");
 		

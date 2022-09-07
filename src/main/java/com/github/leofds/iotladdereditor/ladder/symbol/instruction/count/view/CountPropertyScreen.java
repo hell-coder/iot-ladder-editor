@@ -18,12 +18,15 @@ package com.github.leofds.iotladdereditor.ladder.symbol.instruction.count.view;
 
 import java.awt.Dimension;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -34,13 +37,17 @@ import com.github.leofds.iotladdereditor.ladder.rung.Rung;
 import com.github.leofds.iotladdereditor.ladder.symbol.instruction.LadderInstruction;
 import com.github.leofds.iotladdereditor.ladder.view.DialogScreen;
 import com.github.leofds.iotladdereditor.ladder.view.factory.FieldFactory;
+import com.github.leofds.iotladdereditor.ladder.view.listener.ComboCustomActionListener;
+import com.github.leofds.iotladdereditor.ladder.view.listener.FloatKeyListener;
 
 public class CountPropertyScreen extends DialogScreen{
 
 	private static final long serialVersionUID = 1L;
 	private DeviceMemory memory;
 	private JFormattedTextField ftName;
-	private JFormattedTextField ftPreset;
+	private JTextField textPreset;
+	private JComboBox comboPreset;
+	private DefaultComboBoxModel modelPreset = new DefaultComboBoxModel();
 	private JFormattedTextField ftAccum;
 	
 	public CountPropertyScreen(String title,DeviceMemory memory) {
@@ -68,10 +75,20 @@ public class CountPropertyScreen extends DialogScreen{
 		ftName.setBounds(76, 8, 86, 20);
 		panel.add(ftName);
 
+/*		
 		ftPreset = FieldFactory.createLongField(-999999999, 999999999);
 		ftPreset.setHorizontalAlignment(SwingConstants.RIGHT);
 		ftPreset.setBounds(76, 33, 86, 20);
 		panel.add(ftPreset);
+*/
+		comboPreset = new JComboBox(modelPreset);
+		comboPreset.setBounds(76, 33, 86, 20);
+		comboPreset.addActionListener(new ComboCustomActionListener(comboPreset));
+		textPreset = (JTextField)comboPreset.getEditor().getEditorComponent();
+		comboPreset.getEditor().getEditorComponent().addKeyListener( new FloatKeyListener( textPreset ) );
+		modelPreset.addElement(Strings.constantValue());
+		comboPreset.setSelectedIndex(0);
+		panel.add(comboPreset);
 
 		ftAccum = FieldFactory.createLongField(-999999999, 999999999);
 		ftAccum.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -118,27 +135,48 @@ public class CountPropertyScreen extends DialogScreen{
 				}
 			}
 		}
-		if(ftName.getText().isEmpty() || ftAccum.getText().isEmpty() || ftPreset.getText().isEmpty()){
+		if(ftName.getText().isEmpty() || ftAccum.getText().isEmpty()){
 			JOptionPane.showMessageDialog(null, Strings.invalidInstructionAttribute());
 			return false;
 		}
 		return true;
 	}
 	
+	public void addPreset(DeviceMemory memory){
+		modelPreset.addElement(memory);
+	}
+
+	public DeviceMemory getSelectedPreset(){
+		int index = comboPreset.getSelectedIndex();
+		if(index==0||index==-1){
+			String str = textPreset.getText();
+			if(str.contains(".")) {
+				return new DeviceMemory(""+Float.parseFloat(textPreset.getText()), Float.class);
+			}
+			return new DeviceMemory(""+Integer.parseInt(textPreset.getText()), Integer.class);
+		}
+		return (DeviceMemory) comboPreset.getSelectedItem();
+	}
+
+	public void setPreset(DeviceMemory memory){
+		for(int i=0;i<modelPreset.getSize();i++){
+			if(modelPreset.getElementAt(i) instanceof DeviceMemory){
+				DeviceMemory mem = (DeviceMemory) modelPreset.getElementAt(i);
+				if(mem.equals(memory)){
+					comboPreset.setSelectedIndex(i);
+					return;
+				}
+			}
+		}
+		comboPreset.setSelectedItem(memory);
+	}
+
 	public String getName(){
 		return "C"+ftName.getText();
 	}
 	
 	public void setName(String name){
 		ftName.setText(name.isEmpty() ? "" : name.substring(1));
-	}
-	
-	public int getPreset(){
-		return Integer.parseInt(ftPreset.getText());
-	}
-	
-	public void setPreset(int preset){
-		ftPreset.setText(""+preset);
 	}
 	
 	public int getAccum() {
